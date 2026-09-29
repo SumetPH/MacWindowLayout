@@ -23,7 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 
 func notify(_ body: String) {
     let content = UNMutableNotificationContent()
-    content.title = "WindowLayout"
+    content.title = "Mac Window Layout"
     content.body = body
     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
     UNUserNotificationCenter.current().add(request) { error in
@@ -68,10 +68,10 @@ struct WindowLayoutApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
-        MenuBarExtra("WindowLayout", systemImage: "rectangle.3.group") {
+        MenuBarExtra("Mac Window Layout", systemImage: "rectangle.3.group") {
             MenuContent(state: appDelegate.state)
         }
-        Window("WindowLayout Settings", id: "settings") {
+        Window("Mac Window Layout Settings", id: "settings") {
             SettingsView(state: appDelegate.state)
         }
         .windowResizability(.contentSize)

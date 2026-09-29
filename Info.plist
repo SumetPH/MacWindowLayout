@@ -5,7 +5,11 @@
     <key>CFBundleIdentifier</key>
     <string>local.windowlayout</string>
     <key>CFBundleName</key>
-    <string>WindowLayout</string>
+    <string>Mac Window Layout</string>
+    <key>CFBundleDisplayName</key>
+    <string>Mac Window Layout</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
     <key>CFBundleExecutable</key>
     <string>WindowLayout</string>
     <key>CFBundlePackageType</key>
