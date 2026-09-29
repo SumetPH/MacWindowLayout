@@ -1,3 +1,4 @@
+import ServiceManagement
 import SwiftUI
 import WindowLayoutCore
 
@@ -6,6 +7,7 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            GeneralSection()
             if state.data.presets.isEmpty {
                 Text("No presets yet — use “Save New Preset…” in the menu bar.").foregroundStyle(.secondary)
             }
@@ -15,6 +17,31 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         .frame(minWidth: 480, minHeight: 360)
+    }
+}
+
+private struct GeneralSection: View {
+    @AppStorage(showMenuBarIconKey) private var showMenuBarIcon = true
+    @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
+
+    var body: some View {
+        Section("General") {
+            Toggle("Launch at login", isOn: Binding(get: { launchAtLogin }, set: setLaunchAtLogin))
+            Toggle("Show menu bar icon", isOn: $showMenuBarIcon)
+            if !showMenuBarIcon {
+                Text("Open the app again (e.g. from Finder) to bring the icon back.").foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private func setLaunchAtLogin(_ enabled: Bool) {
+        do {
+            if enabled { try SMAppService.mainApp.register() } else { try SMAppService.mainApp.unregister() }
+        } catch {
+            NSLog("WindowLayout launch at login failed: \(error)")
+            notify("Couldn't change launch at login: \(error.localizedDescription)")
+        }
+        launchAtLogin = SMAppService.mainApp.status == .enabled
     }
 }
 

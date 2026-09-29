@@ -16,10 +16,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         state.registerHotKeys()
     }
 
+    // Relaunching the app (e.g. from Finder) brings a hidden menu bar icon back.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        UserDefaults.standard.set(true, forKey: showMenuBarIconKey)
+        return true
+    }
+
     // Show banners even though the menu bar app counts as frontmost.
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async
         -> UNNotificationPresentationOptions { [.banner, .sound] }
 }
+
+let showMenuBarIconKey = "showMenuBarIcon"
 
 func notify(_ body: String) {
     let content = UNMutableNotificationContent()
@@ -66,9 +74,10 @@ struct MenuContent: View {
 @main
 struct WindowLayoutApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    @AppStorage(showMenuBarIconKey) private var showMenuBarIcon = true
 
     var body: some Scene {
-        MenuBarExtra("Mac Window Layout", systemImage: "rectangle.3.group") {
+        MenuBarExtra("Mac Window Layout", systemImage: "rectangle.3.group", isInserted: $showMenuBarIcon) {
             MenuContent(state: appDelegate.state)
         }
         Window("Mac Window Layout Settings", id: "settings") {
