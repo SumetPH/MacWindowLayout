@@ -22,6 +22,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         return true
     }
 
+    // SwiftUI's `Window` scene quits the app when its last window closes; this is a menu bar app.
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
+
     // Show banners even though the menu bar app counts as frontmost.
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification) async
         -> UNNotificationPresentationOptions { [.banner, .sound] }
